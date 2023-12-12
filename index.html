@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plario Вопрос ответов решатель</title>
+    <style>
+        body{
+            background-color: bisque;
+        }
+        #input-div{
+            flex-direction: column;
+            align-items: center;
+        }
+        h1{
+            text-align: center;
+            text-decoration: underline;
+            text-decoration-style: wavy;
+            text-decoration-color: aquamarine;
+            font-style: italic;
+            color: violet;
+            margin-bottom: 30px;
+        }
+        #input-div input, textarea{
+            width: 300px;
+            font-size: 20px;
+            padding: 8px 10px 8px 10px;
+            border-radius: 0px;
+            outline: none;
+            margin-top: 10px;
+            border: 1px solid purple;
+            background-color: white;
+        }
+        #input-div select{
+            width: 322px;
+            font-size: 18px;
+            padding: 8px 10px 8px 10px;
+            border-radius: 0px;
+            outline: none;
+            margin-top: 10px;
+            border: 1px solid purple;
+            background-color: white;
+        }
+        #save_btn, #show_or_hide{
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: purple;
+            margin-top: 10px;
+            padding: 10px 20px 10px 20px;
+            outline: none;
+            cursor: pointer;
+            border: 1px solid gold;
+            margin-bottom: 10px;
+        }
+        #save_btn:hover, #show_or_hide:hover{
+            opacity: 0.7;
+            border-bottom: 1.5px solid black;
+        }
+        #message{
+            color: rgb(0, 17, 255);
+            font-weight: 600;
+            text-align: center;
+        }
+        #get_answer_btn{
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: rgb(224, 92, 250);
+            margin-top: 10px;
+            padding: 10px 20px 10px 20px;
+            outline: none;
+            cursor: pointer;
+            border: 1px solid rgb(194, 61, 221);
+        }
+        #get_answer_btn:hover{
+            opacity: 0.7;
+            border-color: rgb(224, 92, 250);
+        }
+        #btn-div{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #top-section{
+            border-bottom-color: brown;
+            border-bottom-style: dotted;
+            border-bottom-width: 4px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #ans_message{
+            text-align: center;
+            margin-top: 20px;
+            color: rgb(0, 17, 255);
+            font-weight: 600;
+        }
+        #answer_area{
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        #raw_answer_area{
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+        }
+        #btn-div{
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 3px dotted green;
+        }
+        #access_msg{
+            display: block;
+            color: rgb(7, 79, 107);
+            font-weight: bold;
+            margin-bottom: 8;
+        }
+        .contact-link{
+            font-size: 20px;
+            color: green;
+            border-radius: 50%;
+            padding: 8px;
+            background-color: violet;
+        }
+        .contact-text{
+            padding-left: 8;
+            padding-right: 8;
+            padding-top: 4;
+            padding-bottom: 2;
+            background-image: linear-gradient(pink, white, yellow);
+            color: rgb(38, 145, 52);
+            font-style: oblique;
+            font-weight: bold;
+        }
+    </style>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <section id="top-section">
+        <h1>Пларио дискретная математика</h1>
+        <div  class="clp_div" style="display: none;">
+            <input type="radio" class="radio-b" name="type" id="ep"><label for="ep">почта и пароль</label>
+            <input type="radio" class="radio-b" name="type" id="act"><label for="ep">access_token</label>
+        </div>
+        <div id="input-div" style="display: flex;">
+            <div class="clp_div">
+                <input type="email" name="email" id="email" placeholder="Ваша электронная почта Plario" required>
+            </div>
+            <div class="clp_div">
+                <input type="password" name="password" id="password" placeholder="Ваш пароль Plario" required>
+            </div>
+            <div class="clp_div" style="display: none;">
+                <textarea name="access_token" id="access_token" placeholder="Ваш access_token" required></textarea>
+                <a id="access_msg" href="https://github.com/FakeCoder01/node-plario/tree/main/docs">Как найти свой `access_token`</a>
+            </div>
+            <div class="clp_div">
+                <select name="module" id="module" required>
+                    <option disabled selected>Выберите имя модуля</option>
+                    <option value="1">Свойства булевых функций</option>
+                    <option value="2">Минимизация булевых функций</option>
+                    <option value="3">Булевы функции</option>
+                    <option value="4">Булевы векторы</option>
+                </select>
+            </div>
+        </div>
+        <div id="spcl_div">
+            <button type="button" style="background-color: gray;" id="show_or_hide" onclick="enlarge_n_hide();">Скрывать</button>
+            <button type="button" id="save_btn" onclick="setup();">Сохранять</button>
+        </div>
+        
+        <p class="contact-text"> Если возникнут проблемы или не работает, напишите мне 
+            <a class="contact-link" href="http://vk.com/import.pandas" target="_blank">ВК </a>
+        </p>
+        <div id="message" onclick="this.innerText='&nbsp;';">  </div>
+    </section>
+
+
+    <section>
+        <div id="btn-div">
+            <button type="button" id="get_answer_btn" onclick="get_question_answer();" disabled>Получите вопрос ответа</button>
+            <div id="ans_message" onclick="this.innerText='&nbsp;';"></div>
+        </div>
+        <div>
+            <div id="answer_area"></div>
+            <hr>
+            <div id="raw_answer_area"></div>
+        </div>
+    </section>
+
+</body>
+<script>
+
+    async function get_plario_attempt_id() {
+        const moduleId_p = localStorage.getItem('module_id');
+        const teacherCourseId_p = localStorage.getItem('teacher_course_id');
+        const question_p = await fetch(`https://my.plario.ru/api/adaptiveLearning?moduleId=${moduleId_p}&teacherCourseId=${teacherCourseId_p}&culture=ru`, {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9,bn;q=0.8",
+                "authorization": "Bearer " + localStorage.getItem("access_token"),
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-origin"
+            },
+            "referrer": "https://my.plario.ru/learner/exercises",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": null,
+            "method": "GET",
+            "mode": "cors"
+        });
+        
+        
+        if(question_p.status != 200 || !question_p.ok){
+            ans_message.innerHTML = 'Не удалось получить вопрос';
+            return;
+        }
+
+        const data_p = await question_p.json();
+
+
+        const activity_id_p = data_p.exercise.activityId;
+
+        const attempt = await fetch(`https://my.plario.ru/api/attempt/start/${activity_id_p}?culture=ru`, {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9",
+                "authorization": "Bearer " + localStorage.getItem("access_token"),
+                "content-type": "application/json",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-origin",
+                "sec-gpc": "1"
+            },
+            "referrer": "https://my.plario.ru/learner/exercises",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": null,
+            "method": "POST",
+            "mode": "cors",
+        });
+        if (!attempt.ok || attempt.status != 200) return false;
+        const attempt_id = await attempt.json();
+        return attempt_id - 1;
+    }
+
+
+
+    const answer_area = document.getElementById("answer_area");
+    const raw_answer_area = document.getElementById("raw_answer_area");
+    const get_answer_btn = document.getElementById("get_answer_btn");
+    const message = document.getElementById("message");
+    const ans_message = document.getElementById("ans_message");
+    let var_id = 0;
+
+    function enlarge_n_hide(){
+
+        if(document.getElementById("input-div").style.display === "flex") {
+            document.getElementById("input-div").style.display = "none";
+            document.getElementById("save_btn").style.display = "none";
+            document.getElementById("show_or_hide").innerText= "Показывать";
+        }else{
+            document.getElementById("input-div").style.display = "flex";
+            document.getElementById("save_btn").style.display = "inline-block";
+            document.getElementById("show_or_hide").innerText = "Скрывать";
+        }
+    }
+
+
+    let is_valid = false;
+    
+    function validate_user_input(input) {
+        if (input == '' || input == null || input == undefined) return false;
+        return true;
+    }
+    
+    if(validate_user_input(localStorage.getItem("access_token")) && validate_user_input(localStorage.getItem("module_id")) && validate_user_input(localStorage.getItem("teacher_course_id"))) {
+        is_valid = true;
+        get_answer_btn.disabled = false;
+    }
+
+    async function get_plario_access_token(USERNAME, PASSWORD) {
+        const login = await fetch("/access-token", {
+            "method": "POST",
+            "headers": {
+                "accept": "application/json",
+                "content-type": "application/json",
+            },
+            "body": JSON.stringify({
+                "email": USERNAME,
+                "password": PASSWORD
+            })
+        });
+        if (login.status != 200 || !login.ok) {
+            return false;
+        }
+        const response = await login.json();
+        localStorage.setItem("access_token", response.access_token);
+        return true;
+
+    }
+
+
+    async function setup() {
+        message.innerText = "";
+        is_valid = false;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        // const access_token = document.getElementById("access_token").value;
+        const module = document.getElementById("module").value;
+
+        if (!validate_user_input(email)) {
+            message.innerText = "Пожалуйста, введите электронное письмо";
+            is_valid = false;
+            return;
+        }
+        if (!validate_user_input(password)) {
+            message.innerText = "Пожалуйста введите пароль";
+            is_valid = false;
+            return;
+        }
+        // if (!validate_user_input(access_token)) {
+        //     message.innerText = "Пожалуйста, введите access_token";
+        //     is_valid = false;
+        //     return;
+        // }
+
+        if (!validate_user_input(module) || module > '4' || module < '1') {
+            message.innerText = "Пожалуйста, выберите модуль";
+            is_valid = false;
+            return;
+        }
+        const at = await get_plario_access_token(email, password);
+        if(!at){
+            message.innerText = "Неправильный адрес электронной почты или пароль\n(пароль должен быть для сайта Plario, а не для Moodle)";
+            return;
+        }
+
+
+        const COURSE_DETAILS = {
+            "1": 47,
+            "2": 44,
+            "3": 38,
+            "4": 39
+        }
+        const TEACHER_COURSE_ID = 1037;
+
+        // const fmt_access_token = access_token.replaceAll('"', '');
+        // console.log(fmt_access_token)
+
+        // localStorage.setItem("access_token", fmt_access_token);
+
+        localStorage.setItem("module_id", COURSE_DETAILS[module]);
+        localStorage.setItem("teacher_course_id", TEACHER_COURSE_ID);
+        var_id = await get_plario_attempt_id();
+
+        is_valid = true;
+        get_answer_btn.disabled = false;
+
+        document.getElementById("input-div").style.display = "none";
+        document.getElementById("save_btn").style.display = "none";
+        document.getElementById("show_or_hide").innerText= "Show";
+
+    }
+
+    async function get_question_answer() {
+        ans_message.innerHTML = "";
+        if (!is_valid) return;
+
+
+        ans_message.innerHTML = 'Загрузка...';
+        const moduleId = localStorage.getItem('module_id');
+        const teacherCourseId = localStorage.getItem('teacher_course_id');
+
+        const question = await fetch(`https://my.plario.ru/api/adaptiveLearning?moduleId=${moduleId}&teacherCourseId=${teacherCourseId}&culture=ru`, {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9,bn;q=0.8",
+                "authorization": "Bearer " + localStorage.getItem("access_token"),
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-origin"
+            },
+            "referrer": "https://my.plario.ru/learner/exercises",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": null,
+            "method": "GET",
+            "mode": "cors"
+        });
+        
+        
+        if(question.status != 200 || !question.ok){
+            ans_message.innerHTML = 'Не удалось получить вопрос';
+            return;
+        }
+
+        const data = await question.json();
+
+        if(data.exercise.type === "Lesson") {
+            ans_message.innerHTML = 'Это теория';
+            return;
+        }
+        const activity_id = data.exercise.activityId;
+        // const atmpt_count = await get_plario_attempt_id(activity_id);
+
+        // if(atmpt_count === false){
+        //     ans_message.innerHTML = 'Не удалось получить попытку id вопросов';
+        //     return;
+        // }
+
+        // var_id += 1;
+
+        const answers = data.exercise.possibleAnswers;
+        const choosen_answer_id = answers[0].answerId;
+        const answer = await  fetch("https://my.plario.ru/api/adaptiveLearning/checkAnswer?culture=ru", {
+        "headers": {
+          "accept": "application/json, text/plain, */*",
+          "accept-language": "en-US,en;q=0.9,bn;q=0.8",
+          "authorization": "Bearer " + localStorage.getItem('access_token'),
+          "content-type": "application/json",
+          "sec-fetch-dest": "empty",
+          "sec-fetch-mode": "cors",
+          "sec-fetch-site": "same-origin"
+        },
+        "referrer": "https://my.plario.ru/learner/exercises",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": `{\"activityId\":${activity_id},\"attemptId\":${var_id},\"answerId\":${choosen_answer_id},\"moduleId\":${moduleId},\"teacherCourseId\":${teacherCourseId}}`,
+        "method": "POST",
+        "mode": "cors"
+        // "credentials": "include"
+      });
+
+        if(answer.status!= 200 || !answer.ok){
+            ans_message.innerHTML = 'Не удалось получить ответ';
+            return;
+        }
+
+        const answer_data = await answer.json();
+        const rightAnswerId = answer_data.rightAnswerId;
+
+        let math_string = '';
+        for (let i = 0; i < answers.length; i++) {
+            if (answers[i].answerId == rightAnswerId) {
+                math_string = answers[i].text;
+                break;
+            }
+        }
+        const tempElement = document.createElement("div");
+        tempElement.innerHTML = math_string;
+        answer_area.innerHTML = '';
+        raw_answer_area.innerHTML = '';
+        try {
+            const sanitized_math = tempElement.textContent;
+            const node = document.createElement("div");
+            node.textContent = sanitized_math;
+            answer_area.appendChild(node);
+            await MathJax.startup.promise;
+            await MathJax.typesetPromise([node]);
+        }
+        catch {
+        }
+        raw_answer_area.innerHTML = math_string;
+        ans_message.innerHTML = '';
+
+    }
+</script>
+
+</html>
