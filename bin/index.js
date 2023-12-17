@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
             }
         });
     } 
-    else if (reqUrl.pathname == '/access-token-closed' && req.method === 'POST') {
+    else if (reqUrl.pathname == '/access-token' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
