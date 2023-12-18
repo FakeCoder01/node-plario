@@ -15,8 +15,8 @@ const server = http.createServer((req, res) => {
             }
         });
     } 
-    else if (reqUrl.pathname == '/auto' && req.method === 'GET') {
-        fs.readFile('index.html', 'utf8', (err, data) => {
+    else if (reqUrl.pathname == '/calculas' && req.method === 'GET') {
+        fs.readFile('index2.html', 'utf8', (err, data) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.end('Error reading file');
