@@ -368,7 +368,7 @@
 
         localStorage.setItem("module_id", COURSE_DETAILS[module]);
         localStorage.setItem("teacher_course_id", TEACHER_COURSE_ID);
-        var_id = await get_plario_attempt_id();
+        // var_id = await get_plario_attempt_id();
 
         is_valid = true;
         get_answer_btn.disabled = false;
@@ -426,6 +426,8 @@
 
         // var_id += 1;
 
+        let ran = await get_plario_attempt_id();
+
         const answers = data.exercise.possibleAnswers;
         const choosen_answer_id = answers[0].answerId;
         const answer = await  fetch("https://my.plario.ru/api/adaptiveLearning/checkAnswer?culture=ru", {
@@ -440,7 +442,7 @@
         },
         "referrer": "https://my.plario.ru/learner/exercises",
         "referrerPolicy": "strict-origin-when-cross-origin",
-        "body": `{\"activityId\":${activity_id},\"attemptId\":${var_id},\"answerId\":${choosen_answer_id},\"moduleId\":${moduleId},\"teacherCourseId\":${teacherCourseId}}`,
+        "body": `{\"activityId\":${activity_id},\"attemptId\":${ran + 1},\"answerId\":${choosen_answer_id},\"moduleId\":${moduleId},\"teacherCourseId\":${teacherCourseId}}`,
         "method": "POST",
         "mode": "cors"
         // "credentials": "include"

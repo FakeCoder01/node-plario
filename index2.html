@@ -388,7 +388,7 @@
 
         localStorage.setItem("module_id", COURSE_DETAILS[module]);
         localStorage.setItem("teacher_course_id", TEACHER_COURSE_ID[module]);
-        var_id = await get_plario_attempt_id();
+        // var_id = await get_plario_attempt_id();
 
         is_valid = true;
         get_answer_btn.disabled = false;
@@ -432,6 +432,7 @@
 
         const data = await question.json();
 
+        let ran = await get_plario_attempt_id();
         if(data.exercise.type === "Lesson") {
             ans_message.innerHTML = 'Это теория';
             return;
@@ -460,7 +461,7 @@
         },
         "referrer": "https://my.plario.ru/learner/exercises",
         "referrerPolicy": "strict-origin-when-cross-origin",
-        "body": `{\"activityId\":${activity_id},\"attemptId\":${var_id},\"answerId\":${choosen_answer_id},\"moduleId\":${moduleId},\"teacherCourseId\":${teacherCourseId}}`,
+        "body": `{\"activityId\":${activity_id},\"attemptId\":${ran + 1},\"answerId\":${choosen_answer_id},\"moduleId\":${moduleId},\"teacherCourseId\":${teacherCourseId}}`,
         "method": "POST",
         "mode": "cors"
         // "credentials": "include"
