@@ -5,7 +5,7 @@ const fs = require('fs');
 const server = http.createServer((req, res) => {
     const reqUrl = url.parse(req.url, true);
     if (reqUrl.pathname == '/' && req.method === 'GET') {
-        fs.readFile('index.html', 'utf8', (err, data) => {
+        fs.readFile('new.html', 'utf8', (err, data) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.end('Error reading file');
@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
         });
     } 
     else if (reqUrl.pathname == '/calculus' && req.method === 'GET') {
-        fs.readFile('index2.html', 'utf8', (err, data) => {
+        fs.readFile('new.html', 'utf8', (err, data) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.end('Error reading file');
@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
             }
         });
     } 
-    else if (reqUrl.pathname == '/access-token' && req.method === 'POST') {
+    else if (reqUrl.pathname == '/access-token-blocked' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
