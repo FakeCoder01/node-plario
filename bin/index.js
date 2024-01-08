@@ -15,6 +15,10 @@ const server = http.createServer((req, res) => {
             }
         });
     } 
+    else if (reqUrl.pathname == '/favicon.ico' && req.method === 'GET') {
+        res.setHeader('Content-Type', 'image/x-icon');
+        fs.createReadStream("assets/favicon.ico").pipe(res);
+    } 
     else if (reqUrl.pathname == '/calculus' && req.method === 'GET') {
         fs.readFile('new.html', 'utf8', (err, data) => {
             if (err) {
